@@ -20,7 +20,6 @@ public class ProductController {
     //    отображает все продукты
 //    GET http://localhost:4444/market
     @GetMapping
-    @ResponseBody
     public List<Product> showMainPage() {
         return productService.findAll();
     }
@@ -28,7 +27,6 @@ public class ProductController {
     // добавляет товар
 //    GET http://localhost:4444/market/products/add?title=cola&price=100
     @GetMapping("products/add")
-    @ResponseBody
     public List<Product> addProductAndShowAllProducts(@RequestParam String title, @RequestParam int price) {
         saveNewProduct(title, price);
         return productService.findAll();
@@ -44,7 +42,6 @@ public class ProductController {
     //    отображает товар по ID
     // GET http://localhost:4444/market/products/{id}
     @GetMapping("products/{id}")
-    @ResponseBody
     public Product showProductInfo(@PathVariable Long id) {
         return productService.findById(id);
     }
@@ -52,15 +49,14 @@ public class ProductController {
     //    удаляет товар по ID
 //    GET http://localhost:4444/market/products/delete/{id}
     @GetMapping("products/delete/{id}")
-    public List<Product> deleteProductById(@PathVariable Long id) {
+    public void deleteProductById(@PathVariable Long id) {
         productService.deleteProductById(id);
-        return productService.findAll();
+//        return productService.findAll();
     }
 
     //    ищет товары выше минимальной цены
 //    GET http://localhost:4444/market/products/find_by_min_price?min=
     @GetMapping("products/find_by_min_price")
-    @ResponseBody
     public List<Product> findByMinPrice(@RequestParam(name = "min") Integer min) {
         return productService.findByMinPrice(min);
     }
