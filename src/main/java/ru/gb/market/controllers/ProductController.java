@@ -2,6 +2,7 @@ package ru.gb.market.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
@@ -17,130 +18,27 @@ import java.util.List;
 public class ProductController {
     private final ProductService productService;
 
-    //    отображает все продукты
-//    GET http://localhost:4444/market
-    @GetMapping
-    public List<Product> showMainPage() {
-        return productService.findAll();
-    }
-
-    // добавляет товар
-//    GET http://localhost:4444/market/products/add?title=cola&price=100
-    @GetMapping("products/add")
-    public List<Product> addProductAndShowAllProducts(@RequestParam String title, @RequestParam int price) {
-        saveNewProduct(title, price);
-        return productService.findAll();
-    }
-
-    //    добавляет товар - Работает в паре с GET
-    @PostMapping("products/add")
-    public String saveNewProduct(@RequestParam String title, @RequestParam int price) {
-        productService.saveNewProduct(title, price);
-        return "redirect:/";
-    }
-
-    //    отображает товар по ID
-    // GET http://localhost:4444/market/products/{id}
-    @GetMapping("products/{id}")
-    public Product showProductInfo(@PathVariable Long id) {
+//    GET http://localhost:4444/market/products/{id}
+    @GetMapping("/products/{id}")
+    public Product findById(@PathVariable Long id) {
         return productService.findById(id);
     }
 
-    //    удаляет товар по ID
-//    GET http://localhost:4444/market/products/delete/{id}
-    @GetMapping("products/delete/{id}")
-    public void deleteProductById(@PathVariable Long id) {
+    //    GET http://localhost:4444/market/products
+    @GetMapping("/products")
+    public List<Product> findAll() {
+        return productService.findAll();
+    }
+
+    @PostMapping("/products/delete/{id}")
+    public void deleteProduct(@PathVariable Long id) {
         productService.deleteProductById(id);
-//        return productService.findAll();
     }
 
-    //    ищет товары выше минимальной цены
-//    GET http://localhost:4444/market/products/find_by_min_price?min=
-    @GetMapping("products/find_by_min_price")
-    public List<Product> findByMinPrice(@RequestParam(name = "min") Integer min) {
-        return productService.findByMinPrice(min);
+    //    GET http://localhost:4444/market/products_page?p=
+    @GetMapping("/products_page")
+    public Page<Product> findPage(@RequestParam(name = "p") int pageIndex) {
+        return productService.findPage(pageIndex-1, 10);
     }
 
-
-    //    ищет товары ниже максимальной цены
-//    GET http://localhost:4444/market/products/find_by_max_price?
-    @GetMapping("products/find_by_max_price")
-    @ResponseBody
-    public List<Product> findByMaxPrice(@RequestParam(name = "max") Integer max) {
-        return productService.findByMaxPrice(max);
-    }
-
-    //    ищет товары с ценой в пределах мин и макс
-//    GET http://localhost:4444/market/products/find_by_min_max_price?
-    @GetMapping("products/find_by_min_max_price")
-    @ResponseBody
-    public List<Product> findByMaxPrice(@RequestParam(name = "min") Integer min, @RequestParam(name = "max") Integer max) {
-        return productService.findByMinAndMaxPrice(min, max);
-    }
-
-
-//
-//    //    отображает основную страницу со всеми продуктами
-////    GET http://localhost:4444/market
-//    @GetMapping
-//    public String showMainPage(Model model) {
-//        model.addAttribute("products", productService.findAll());
-//        return "index";
-//    }
-//
-//    // переводит на страницу добавления товара
-////    GET http://localhost:4444/market/products/add
-//    @GetMapping("products/add")
-//    public String showAddProductForm() {
-//        return "add_product_form";
-//    }
-//
-//    //    добавляет товар через
-////    POST
-//    @PostMapping("products/add")
-//    public String saveNewProduct(@RequestParam String title, @RequestParam int price) {
-//        productService.saveNewProduct(title, price);
-//        return "redirect:/";
-//    }
-//
-//    //    отображает товар по ID
-//    // GET http://localhost:4444/market/products/{id}
-//    @GetMapping("products/{id}")
-//    public String showProductInfo(Model model, @PathVariable Long id) {
-//        model.addAttribute("product", productService.findById(id));
-//        return "product_info";
-//    }
-//
-//    //    удаляет товар по ID
-////    GET http://localhost:4444/market/products/delete/{id}
-//    @GetMapping("products/delete/{id}")
-//    public String deleteProductById(@PathVariable Long id) {
-//        productService.deleteProductById(id);
-//        return "redirect:/";
-//    }
-//
-//    //    ищет товары выше минимальной цены
-////    GET http://localhost:4444/market/products/find_by_min_price?min=
-//    @GetMapping("products/find_by_min_price")
-//    @ResponseBody
-//    public List<Product> findByMinPrice(@RequestParam(name = "min") Integer min) {
-//        return productService.findByMinPrice(min);
-//    }
-//
-//
-//    //    ищет товары ниже максимальной цены
-////    GET http://localhost:4444/market/products/find_by_max_price?
-//    @GetMapping("products/find_by_max_price")
-//    @ResponseBody
-//    public List<Product> findByMaxPrice(@RequestParam(name="max") Integer max) {
-//        return productService.findByMaxPrice(max);
-//    }
-//
-//    //    ищет товары с ценой в пределах мин и макс
-////    GET http://localhost:4444/market/products/find_by_min_max_price?
-//    @GetMapping("products/find_by_min_max_price")
-//    @ResponseBody
-//    public List<Product> findByMaxPrice(@RequestParam(name="min") Integer min, @RequestParam(name = "max") Integer max) {
-//        return productService.findByMinAndMaxPrice(min, max);
-//    }
 }

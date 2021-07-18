@@ -1,10 +1,33 @@
-create table categories (id bigserial primary key, title varchar(255));
-insert into categories (title)
-values ('Food');
-
-create table products (id bigserial primary key, producttitle varchar(255), productprice int, category_id bigint references categories (id));
-insert into products (producttitle, productprice, category_id)
+create table products (id bigserial primary key, producttitle varchar(255), productprice int);
+insert into products (producttitle, productprice)
 values
-('Milk', 85, 1),
-('Bread', 25, 1),
-('Cheese', 450,1 );
+('Product1', 10),
+('Product2', 20),
+('Product3', 30),
+('Product4', 40),
+('Product5', 50),
+('Product6', 60),
+('Product7', 70),
+('Product8', 80),
+('Product9', 90),
+('Product10', 100),
+('Product11', 110),
+('Product12', 120),
+('Product13', 130),
+('Product14', 140),
+('Product15', 150),
+('Product16', 160),
+('Product17', 170),
+('Product18', 180),
+('Product19', 190),
+('Product20', 200),
+('Product21', 210),
+('Product22', 220),
+('Product23', 230),
+('Product24', 240),
+('Product25', 250),
+('Product26', 260),
+('Product27', 270),
+('Product28', 280),
+('Product29', 290),
+('Product30', 300);
