@@ -20,7 +20,7 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
    }
    }).then(function (response) {
    console.log(response);
-   $scope.products = response.data;
+   $scope.products = response.data.content;
    });
    };
 
