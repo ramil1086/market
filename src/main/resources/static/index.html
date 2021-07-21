@@ -29,13 +29,13 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="p in products">
+        <tr ng-repeat="p in productsPage.content">
             <td>{{p.id}}</td>
             <td>{{p.title}}</td>
             <td>{{p.price}}</td>
             <td>
                 <button class="btn btn-primary" ng-click="showProductInfo(p.id)">Info</button>
-               <button class="btn btn-primary" ng-click="deleteProduct(p.id)">Delete</button>
+                <button class="btn btn-primary" ng-click="deleteProduct(p.id)">Delete</button>
 
             </td>
         </tr>
@@ -43,9 +43,15 @@
     </table>
 
     <p></p>
-    <h3>Pagination</h3>
-    <button class="btn btn-primary" ng-click="loadPage(1)">Load First Page</button>
-    <button class="btn btn-primary" ng-click="loadPage(2)">Load Second Page</button>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li ng-repeat="p in navList" class="page-item">
+                <a class="page-link" ng-click="loadPage(p)">{{p}}</a>
+            </li>
+
+        </ul>
+    </nav>
+
 </div>
 </body>
 
