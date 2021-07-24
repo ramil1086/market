@@ -24,19 +24,21 @@ import java.util.function.Function;
 public class ProductController {
     private final ProductService productService;
     private final CategoryService categoryService;
+//    private static final Function<Product, ProductDto> mapProductToProductDto = p -> new ProductDto(p.getId(), p.getTitle(), p.getPrice(), p.getCategory().getTitle());
 
-    //    GET http://localhost:4444/market/products/{id}
+    //    GET http://localhost:4444/market/api/v1/products/{id}
     @GetMapping("/{id}")
     public ProductDto findById(@PathVariable Long id) {
         return new ProductDto(productService.findById(id));
+
+//        return mapProductToProductDto.apply(productService.findById(id));
     }
 
-    //    GET http://localhost:4444/market/products
+    //    GET http://localhost:4444/market/api/v1/products
     @GetMapping
     public Page<ProductDto> findAll(@RequestParam(name = "p", defaultValue = "1") int pageIndex) {
-        Page<Product> productPage = productService.findPage(pageIndex-1,10);
-        Page<ProductDto> productDtoPage = productPage.map(product -> new ProductDto(product));
-        return  productDtoPage;
+        return productService.findPage(pageIndex-1,10).map(ProductDto::new);
+//        return productService.findPage(pageIndex-1,10).map(mapProductToProductDto);
     }
 
     @DeleteMapping("/delete/{id}")
@@ -45,7 +47,7 @@ public class ProductController {
     }
 
 
-    //    POST http://localhost:4444/market/products
+    //    POST http://localhost:4444/market/api/v1/products
 //    {
 //        "id": 31,
 //            "title": "Product31",
