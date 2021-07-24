@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.gb.market.dto.ProductDto;
 import ru.gb.market.models.Category;
 import ru.gb.market.models.Product;
+import ru.gb.market.services.CategoryService;
 import ru.gb.market.services.ProductService;
 
 import java.util.Collections;
@@ -22,6 +23,7 @@ import java.util.function.Function;
 @RequestMapping("/api/v1/products")
 public class ProductController {
     private final ProductService productService;
+    private final CategoryService categoryService;
 
     //    GET http://localhost:4444/market/products/{id}
     @GetMapping("/{id}")
@@ -53,11 +55,9 @@ public class ProductController {
     @PostMapping
     public ProductDto createNewProduct(@RequestBody ProductDto newProductDto) {
         Product product = new Product();
-        Category category = new Category();
-        category.setId(1L);
-        category.setTitle(newProductDto.getCategoryTitle());
         product.setTitle(newProductDto.getTitle());
         product.setPrice(newProductDto.getPrice());
+        Category category = categoryService.findByTitle(newProductDto.getCategoryTitle());
         product.setCategory(category);
         return new ProductDto(productService.save(product));
     }

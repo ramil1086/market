@@ -6,4 +6,5 @@ import ru.gb.market.models.Category;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Long> {
+Category findByTitle(String categoryTitle);
 }
