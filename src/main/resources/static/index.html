@@ -23,9 +23,10 @@
         <thead>
         <tr>
             <td>ID</td>
-            <td>Title</td>
-            <td>Price</td>
+            <td>Название</td>
+            <td>Цена</td>
             <td></td>
+
         </tr>
         </thead>
         <tbody>
@@ -34,7 +35,7 @@
             <td>{{p.title}}</td>
             <td>{{p.price}}</td>
             <td>
-                <button class="btn btn-primary" ng-click="showProductInfo(p.id)">Info</button>
+                <button class="btn btn-primary" ng-click="addToCart(p.id)">To Cart</button>
                 <button class="btn btn-primary" ng-click="deleteProduct(p.id)">Delete</button>
 
             </td>
@@ -51,6 +52,37 @@
 
         </ul>
     </nav>
+
+    <p></p>
+    <h3>Cart: {{cart.price}}</h3>
+    <button class="btn btn-primary" ng-click="buyCart()">Buy</button>
+    <table class="table">
+        <thead>
+        <tr>
+            <td>Название</td>
+            <td>Количество</td>
+            <td>Цена</td>
+            <td></td>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="oi in cart.items">
+            <td>{{oi.productTitle}}</td>
+            <td>
+                <button class="btn btn-danger" ng-click="changeQuantity(oi.productId,-1)">-</button>
+                {{oi.quantity}}
+                <button class="btn btn-success" ng-click ="changeQuantity(oi.productId,1)">+</button>
+            </td>
+            <td>{{oi.quantity + ' X ' + oi.pricePerProduct + ' = ' + oi.price}}</td>
+            <td>
+                <button class="btn btn-danger" ng-click="deleteFromCart(oi.productId)">Delete(x)</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <p></p>
+
 
 </div>
 </body>

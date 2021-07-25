@@ -1,0 +1,87 @@
+package ru.gb.market.utils;
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
+import ru.gb.market.dto.OrderItemDto;
+import ru.gb.market.dto.ProductDto;
+import ru.gb.market.models.Product;
+
+import javax.annotation.PostConstruct;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
+@Component
+@Data
+@NoArgsConstructor
+public class Cart {
+    private List<OrderItemDto> items;
+    private BigDecimal price;
+
+    @PostConstruct
+    public void init() {
+        this.items = new ArrayList<>();
+        this.price = BigDecimal.ZERO;
+    }
+
+    public void clear() {
+        items.clear();
+        recalculate();
+    }
+
+    public boolean add(Long productId) {
+        for (OrderItemDto oid : items) {
+            if (oid.getProductId().equals(productId)) {
+                oid.changeQuantity(1);
+                recalculate();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void add(Product product) {
+        items.add(new OrderItemDto(product));
+        recalculate();
+    }
+
+    public void recalculate() {
+        price = BigDecimal.ZERO;
+        for (OrderItemDto oid : items) {
+            price = price.add(oid.getPrice());
+        }
+    }
+
+    public void changeQuantity(int amount, Long productId) {
+        for (OrderItemDto oid : items) {
+            if (oid.getProductId().equals(productId)) {
+                oid.changeQuantity(amount);
+                recalculate();
+                if (oid.getQuantity() == 0) {
+                    items.remove(oid);
+                    recalculate();
+                }
+                return;
+            }
+        }
+
+// нужна помощь со стримами - количество уменьшает, но не пересчитывает
+        // когда добирается до количества в 1 продукт, то вылетает ошибка
+//        items.stream().filter(oid -> oid.getProductId().equals(productId)&& oid.getQuantity()==1).forEach(p -> items.remove(p));
+//        items.stream().filter(oid -> oid.getProductId().equals(productId)).forEach(p -> p.setQuantity(p.getQuantity()+amount));
+//
+//        recalculate();
+    }
+
+    public void delete(Long productId) {
+        for (OrderItemDto oid : items) {
+            if (oid.getProductId().equals(productId)) {
+                items.remove(oid);
+                recalculate();
+                return;
+            }
+        }
+    }
+
+}

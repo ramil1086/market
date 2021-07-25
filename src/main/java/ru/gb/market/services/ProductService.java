@@ -10,6 +10,7 @@ import ru.gb.market.models.Product;
 import ru.gb.market.repositories.ProductRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -20,8 +21,8 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public Product findById(Long id) {
-        return productRepository.findById(id).get();
+    public Optional<Product> findById(Long id) {
+        return productRepository.findById(id);
     }
 
 

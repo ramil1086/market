@@ -1,14 +1,11 @@
 package ru.gb.market.controllers;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import ru.gb.market.dto.CategoryDto;
-import ru.gb.market.dto.ProductDto;
 import ru.gb.market.models.Category;
-import ru.gb.market.models.Product;
 import ru.gb.market.services.CategoryService;
-import ru.gb.market.services.ProductService;
+import ru.gb.market.exceptions.ResourceNotFoundException;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,7 +16,8 @@ public class CategoryController {
     //    GET http://localhost:4444/market/products/{id}
     @GetMapping("/{id}")
     public CategoryDto findById(@PathVariable Long id) {
-        return new CategoryDto(categoryService.findById(id));
+        Category c = categoryService.findById(id).orElseThrow(() -> new ResourceNotFoundException("Category not found, id: " + id));
+        return new CategoryDto(c);
     }
 
 

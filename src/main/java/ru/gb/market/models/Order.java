@@ -1,40 +1,41 @@
 package ru.gb.market.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import ru.gb.market.dto.OrderItemDto;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.List;
 
 @Entity
-@Table(name = "products")
+@Table(name = "orders")
 @Data
 @NoArgsConstructor
-public class Product {
+public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "title")
-    private String title;
-
     @Column(name = "price")
     private BigDecimal price;
 
-    @ManyToOne
-    @JoinColumn (name = "category_id")
-    private Category category;
+
+    @OneToMany(mappedBy = "orderId", cascade = CascadeType.ALL)
+    private List<OrderItem> items;
 
     @CreationTimestamp
     @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    private Date createdAt;
 
     @UpdateTimestamp
     @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    private Date updatedAt;
+
+
 }
