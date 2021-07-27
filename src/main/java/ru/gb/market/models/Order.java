@@ -19,15 +19,15 @@ import java.util.List;
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name="id")
     private Long id;
+
+    @OneToMany(mappedBy = "order")
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    private List<OrderItem> items;
 
     @Column(name = "price")
     private BigDecimal price;
-
-
-    @OneToMany(mappedBy = "orderId", cascade = CascadeType.ALL)
-    private List<OrderItem> items;
 
     @CreationTimestamp
     @Column(name = "created_at")

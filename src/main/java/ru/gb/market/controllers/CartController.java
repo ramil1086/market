@@ -48,27 +48,12 @@ public class CartController {
     @DeleteMapping("/delete/{productId}")
     public void delete(@PathVariable Long productId) {
         cart.delete(productId);
-        cart.recalculate();
     }
 
-    @GetMapping("/buy")
-    public OrderDto buyCart() {
-        Order order = new Order();
-        order.setPrice(cart.getPrice());
-        orderService.save(order);
-        List<OrderItem> orderItems = new ArrayList<>();
-        for (OrderItemDto oid : cart.getItems()) {
-            OrderItem orderItem = new OrderItem();
-            orderItem.setPrice(oid.getPrice());
-            orderItem.setPricePerProduct(oid.getPricePerProduct());
-            orderItem.setQuantity(oid.getQuantity());
-            orderItem.setTitle(oid.getProductTitle());
-            orderItem.setOrderId(order);
-            orderItems.add(orderItem);
-            orderItemService.save(orderItem);
-        }
-
-        return new OrderDto(order, orderItems);
+    @GetMapping("/clear")
+    public void clearCart() {
+        cart.clear();
     }
+
 
 }

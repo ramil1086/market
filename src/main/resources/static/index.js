@@ -56,15 +56,38 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
         });
     };
 
-     $scope.buyCart = function () {
+     $scope.loadOrders = function () {
        $http({
-                url: contextPath + '/cart/buy',
+                url: contextPath + '/orders',
                 method: 'GET'
             }).then(function (response) {
-            console.log(response);
+            $scope.orders = response.data;
 
             });
         };
+
+     $scope.createOrder = function () {
+       $http({
+                url: contextPath + '/orders',
+                method: 'POST'
+            }).then(function (response) {
+            alert('Заказ создан');
+            console.log(response);
+            $scope.loadCart();
+            $scope.loadOrders();
+
+            });
+        };
+
+          $scope.clearCart = function () {
+               $http({
+                        url: contextPath + '/cart/clear',
+                        method: 'GET'
+                    }).then(function (response) {
+                    $scope.cart = null;
+
+                    });
+                };
 
         $scope.deleteFromCart = function (productId) {
        $http({
@@ -85,4 +108,5 @@ return arr;
 
     $scope.loadPage();
     $scope.loadCart();
+    $scope.loadOrders();
 });

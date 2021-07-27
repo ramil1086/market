@@ -12,12 +12,10 @@ import java.util.List;
 @NoArgsConstructor
 public class OrderDto {
     private Long id;
-    private List<OrderItem> itemList;
     private BigDecimal price;
 
-    public OrderDto(Order order, List<OrderItem> list) {
+    public OrderDto(Order order) {
         this.id = order.getId();
-        this.itemList = list;
         this.price = order.getPrice();
     }
 }

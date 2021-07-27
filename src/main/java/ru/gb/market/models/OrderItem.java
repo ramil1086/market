@@ -20,8 +20,9 @@ public class OrderItem {
     @Column(name="id")
     private Long id;
 
-    @Column(name = "title")
-    private String title;
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
 
     @Column(name = "price_per_product")
     private BigDecimal pricePerProduct;
@@ -34,7 +35,7 @@ public class OrderItem {
 
     @ManyToOne (cascade = CascadeType.ALL)
     @JoinColumn(name = "order_id")
-    private Order orderId;
+    private Order order;
 
     @CreationTimestamp
     @Column(name = "created_at")
