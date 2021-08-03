@@ -23,8 +23,9 @@ public class OrderService {
     private final Cart cart;
 
     @Transactional
-    public void createOrder() {
+    public void createOrder(String email) {
         Order order = new Order();
+        order.setEmail(email);
         order.setPrice(cart.getPrice());
         order.setItems(new ArrayList<>());
         for (OrderItemDto o : cart.getItems()) {

@@ -1,4 +1,4 @@
-angular.module('app', []).controller('indexController', function ($scope, $http) {
+angular.module('app', ['ngStorage']).controller('indexController', function ($scope, $http, $localStorage) {
    const contextPath = 'http://localhost:4444/market/api/v1';
 
     $scope.loadPage = function (pageIndex = 1) {
@@ -57,6 +57,9 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
     };
 
      $scope.loadOrders = function () {
+     if (!$scope.isUserLoggedIn()) {
+     return;
+     }
        $http({
                 url: contextPath + '/orders',
                 method: 'GET'
@@ -67,10 +70,8 @@ angular.module('app', []).controller('indexController', function ($scope, $http)
         };
 
      $scope.createOrder = function () {
-       $http({
-                url: contextPath + '/orders',
-                method: 'POST'
-            }).then(function (response) {
+       $http.post(contextPath + '/orders', $scope.user)
+       .then(function (response) {
             alert('Заказ создан');
             console.log(response);
             $scope.loadCart();
@@ -104,6 +105,51 @@ for (let i = startPage; i < endPage + 1; i++) {
 arr.push(i);
 }
 return arr;
+}
+
+$scope.tryToAuth = function() {
+$http.post(contextPath + '/auth', $scope.user)
+.then(function successCallback(response) {
+if (response.data.token) {
+$http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;
+$localStorage.marketUser = {username: $scope.user.username, token: response.data.token};
+
+$scope.user.username = null;
+$scope.user.password = null;
+
+$scope.loadOrders();
+}
+}, function errorCallback(response)
+{});
+};
+
+$scope.clearUser = function() {
+delete $localStorage.marketUser;
+$http.defaults.headers.common.Authorization = '';
+};
+
+$scope.tryToLogout = function() {
+$scope.clearUser();
+if ($scope.user.username) {
+$scope.user.username = null;
+}
+if ($scope.user.password){
+$scope.user.password = null;
+}
+};
+
+
+$scope.isUserLoggedIn = function() {
+if ($localStorage.marketUser) {
+return true;
+} else {
+return false;
+}
+};
+
+if ($localStorage.marketUser) {
+$http.defaults.headers.common.Authorization ='Bearer ' + $localStorage.marketUser.token;
+$scope.loadOrders();
 }
 
     $scope.loadPage();
