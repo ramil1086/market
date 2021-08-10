@@ -65,23 +65,18 @@ public class Cart {
                 return;
             }
         }
-
-// нужна помощь со стримами - количество уменьшает, но не пересчитывает
-        // когда добирается до количества в 1 продукт, то вылетает ошибка
-//        items.stream().filter(oid -> oid.getProductId().equals(productId)&& oid.getQuantity()==1).forEach(p -> items.remove(p));
-//        items.stream().filter(oid -> oid.getProductId().equals(productId)).forEach(p -> p.setQuantity(p.getQuantity()+amount));
-//
-//        recalculate();
     }
 
     public void delete(Long productId) {
-        for (OrderItemDto oid : items) {
-            if (oid.getProductId().equals(productId)) {
-                items.remove(oid);
-                recalculate();
-                return;
-            }
-        }
+//        for (OrderItemDto oid : items) {
+//            if (oid.getProductId().equals(productId)) {
+//                items.remove(oid);
+//                recalculate();
+//                return;
+//            }
+//        }
+        items.removeIf(oi -> oi.getProductId().equals(productId));
+        recalculate();
     }
 
 }

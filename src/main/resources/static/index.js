@@ -154,5 +154,4 @@ $scope.loadOrders();
 
     $scope.loadPage();
     $scope.loadCart();
-    $scope.loadOrders();
 });
