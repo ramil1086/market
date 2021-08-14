@@ -32,6 +32,16 @@ public class Order {
     @Column(name = "price")
     private BigDecimal price;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @Column(name = "address")
+    private String address;
+
+    @Column(name = "phone")
+    private String phone;
+
     @CreationTimestamp
     @Column(name = "created_at")
     private Date createdAt;

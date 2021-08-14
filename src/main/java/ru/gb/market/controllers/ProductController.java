@@ -48,13 +48,6 @@ return new ProductDto(p);
     }
 
 
-    //    POST http://localhost:4444/market/api/v1/products
-//    {
-//        "id": 31,
-//            "title": "Product31",
-//            "price": 310,
-//            "categoryTitle": "Food"
-//    }
     @PostMapping
     public ProductDto createNewProduct(@RequestBody ProductDto newProductDto) {
         Product product = new Product();

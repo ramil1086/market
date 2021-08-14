@@ -8,6 +8,7 @@ import ru.gb.market.exceptions.ResourceNotFoundException;
 import ru.gb.market.models.Order;
 import ru.gb.market.models.OrderItem;
 import ru.gb.market.models.Product;
+import ru.gb.market.models.User;
 import ru.gb.market.repositories.OrderRepository;
 import ru.gb.market.utils.Cart;
 
@@ -23,9 +24,12 @@ public class OrderService {
     private final Cart cart;
 
     @Transactional
-    public void createOrder(String email) {
+    public void createOrder(User user, String address, String phone) {
         Order order = new Order();
-        order.setEmail(email);
+        order.setUser(user);
+        order.setAddress(address);
+        order.setPhone(phone);
+        order.setEmail(user.getEmail());
         order.setPrice(cart.getPrice());
         order.setItems(new ArrayList<>());
         for (OrderItemDto o : cart.getItems()) {
@@ -41,6 +45,25 @@ public class OrderService {
         orderRepository.save(order);
         cart.clear();
     }
+//
+//    public void createOrder(String email) {
+//        Order order = new Order();
+//        order.setEmail(email);
+//        order.setPrice(cart.getPrice());
+//        order.setItems(new ArrayList<>());
+//        for (OrderItemDto o : cart.getItems()) {
+//            OrderItem orderItem = new OrderItem();
+//            orderItem.setOrder(order);
+//            orderItem.setQuantity(o.getQuantity());
+//            Product product = productService.findById(o.getProductId()).orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+//            orderItem.setPrice(product.getPrice().multiply(BigDecimal.valueOf(o.getQuantity())));
+//            orderItem.setPricePerProduct(product.getPrice());
+//            orderItem.setProduct(product);
+//            order.getItems().add(orderItem);
+//        }
+//        orderRepository.save(order);
+//        cart.clear();
+//    }
 
     public List<Order> findAll() {
         return orderRepository.findAll();
