@@ -106,3 +106,11 @@ quantity int,
 created_at timestamp default current_timestamp,
 updated_at timestamp default current_timestamp
 );
+
+create table statistics (
+id bigserial primary key,
+service varchar(255) unique,
+duration bigint,
+created_at timestamp default current_timestamp,
+updated_at timestamp default current_timestamp
+);
