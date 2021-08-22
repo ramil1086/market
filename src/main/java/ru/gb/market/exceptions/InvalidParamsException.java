@@ -1,8 +1,19 @@
 package ru.gb.market.exceptions;
 
-public class InvalidParamsException extends RuntimeException{
+import java.util.List;
+import java.util.stream.Collectors;
 
+public class InvalidParamsException extends RuntimeException{
+private List<String> messages;
+
+public List<String> getMessages() {
+    return messages;
+}
+    public InvalidParamsException(List<String> messages) {
+       super(messages.stream().collect(Collectors.joining(", ")));
+        this.messages = messages;
+    }
     public InvalidParamsException(String message) {
-        super(message);
+       this(List.of(message));
     }
 }

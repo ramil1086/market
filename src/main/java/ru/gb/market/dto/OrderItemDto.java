@@ -2,6 +2,7 @@ package ru.gb.market.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.gb.market.models.OrderItem;
 import ru.gb.market.models.Product;
 
 import java.math.BigDecimal;
@@ -21,6 +22,14 @@ public class OrderItemDto {
         this.pricePerProduct = product.getPrice();
         this.price = product.getPrice();
         this.productTitle = product.getTitle();
+
+    }
+    public OrderItemDto(OrderItem orderItem) {
+        this.productId = orderItem.getId();
+        this.quantity = orderItem.getQuantity();
+        this.pricePerProduct = orderItem.getPricePerProduct();
+        this.price = orderItem.getPrice();
+        this.productTitle = orderItem.getProduct().getTitle();
 
     }
 

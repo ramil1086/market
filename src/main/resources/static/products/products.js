@@ -17,7 +17,10 @@ angular.module('app').controller('productsController', function ($scope, $http, 
               url: contextPath + '/api/v1/products',
               method: 'GET',
               params: {
-              'p': pageIndex
+              'p': pageIndex,
+              'min_price': $scope.filter != null ? $scope.filter.minPrice : null,
+              'max_price': $scope.filter != null ? $scope.filter.maxPrice : null,
+              'title': $scope.filter !=null ? $scope.filter.title : null
               }
           }).then(function (response) {
               $scope.productsPage = response.data;
@@ -43,6 +46,8 @@ angular.module('app').controller('productsController', function ($scope, $http, 
            $scope.loadPage();
         });
     };
+
+
 
     $scope.loadPage();
 });

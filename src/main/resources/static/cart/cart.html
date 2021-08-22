@@ -2,10 +2,7 @@
 <h3>Cart: {{cart.price}}</h3>
 <span ng-show="cart.items.length == 0 || cart == null"><h3>Корзина пуста</h3></span>
 <div ng-show="cart.items.length > 0">
-    <button ng-show="isUserLoggedIn()" class="btn btn-primary" ng-click="createOrder()">Оформить заказ</button>
-    <button ng-show="!isUserLoggedIn()" class="btn btn-primary">Авторизоваться</button>
 
-    <button class="btn btn-danger" ng-click="clearCart()">Очистить корзину</button>
     <table class="table">
         <thead>
         <tr>
@@ -31,6 +28,9 @@
         </tr>
         </tbody>
     </table>
+    <p></p>
+    <button class="btn btn-danger" ng-click="clearCart()">Очистить корзину</button>
+
     <form novalidate ng-submit="createOrder()">
         <div class="form-group col-md-6">
             <label for="destinationField">Адрес доставки</label>

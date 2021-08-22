@@ -52,10 +52,12 @@ angular.module('app').controller('cartController', function ($scope, $http, $loc
        phone: $scope.order_info.phone
        }
        })
-       .then(function (response) {
+       .then(function successCallback(response) {
             alert('Заказ создан');
-            console.log(response);
             $scope.loadCart();
+            }
+            , function errorCallback(response){
+            alert(response.data.messages);
             });
         };
 

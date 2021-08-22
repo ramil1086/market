@@ -14,6 +14,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler
     public ResponseEntity<?> catchInvalidParamsException(InvalidParamsException e) {
-        return new ResponseEntity<>(new MarketError(e.getMessage()), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new MarketError(e.getMessages()), HttpStatus.BAD_REQUEST);
     }
 }
