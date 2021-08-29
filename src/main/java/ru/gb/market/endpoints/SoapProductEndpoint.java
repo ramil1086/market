@@ -5,7 +5,7 @@ import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
-import ru.gb.market.services.soap.SoapProductService;
+import ru.gb.market.services.ProductService;
 import ru.gb.market.soap.products.GetAllProductsRequest;
 import ru.gb.market.soap.products.GetAllProductsResponse;
 import ru.gb.market.soap.products.GetProductByIdRequest;
@@ -15,13 +15,13 @@ import ru.gb.market.soap.products.GetProductByIdResponse;
 @RequiredArgsConstructor
 public class SoapProductEndpoint {
     private static final String NAMESPACE_URI = "http://www.marketapp.ru/spring/ws/products";
-    private final SoapProductService soapProductService;
+    private final ProductService productService;
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getProductByIdRequest")
     @ResponsePayload
     public GetProductByIdResponse getProductByIdResponse(@RequestPayload GetProductByIdRequest request) {
         GetProductByIdResponse response = new GetProductByIdResponse();
-        response.setProductsoap(soapProductService.getById(request.getId()));
+        response.setProductsoap(productService.findSoapById(request.getId()));
         return response;
     }
 
@@ -29,7 +29,7 @@ public class SoapProductEndpoint {
     @ResponsePayload
     public GetAllProductsResponse getAllProductsResponse(@RequestPayload GetAllProductsRequest request) {
         GetAllProductsResponse response = new GetAllProductsResponse();
-        soapProductService.getAllProducts().forEach(response.getProducts()::add);
+        productService.getAllProducts().forEach(response.getProducts()::add);
         return response;
     }
 

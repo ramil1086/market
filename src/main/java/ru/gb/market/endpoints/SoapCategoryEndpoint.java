@@ -5,7 +5,7 @@ import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
-import ru.gb.market.services.soap.SoapCategoryService;
+import ru.gb.market.services.CategoryService;
 import ru.gb.market.soap.categories.GetCategoryByIdRequest;
 import ru.gb.market.soap.categories.GetCategoryByIdResponse;
 
@@ -13,13 +13,13 @@ import ru.gb.market.soap.categories.GetCategoryByIdResponse;
 @RequiredArgsConstructor
 public class SoapCategoryEndpoint {
     private static final String NAMESPACE_URI = "http://www.marketapp.ru/spring/ws/categories";
-    private final SoapCategoryService soapCategoryService;
+    private final CategoryService categoryService;
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getCategoryByIdRequest")
     @ResponsePayload
     public GetCategoryByIdResponse getCategoryByIdResponse(@RequestPayload GetCategoryByIdRequest request) {
         GetCategoryByIdResponse response = new GetCategoryByIdResponse();
-        response.setCategorysoap(soapCategoryService.getById(request.getId()));
+        response.setCategorysoap(categoryService.getById(request.getId()));
         return response;
     }
 
