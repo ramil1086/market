@@ -12,15 +12,15 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+//@Component
 @Data
-@NoArgsConstructor
+//@NoArgsConstructor
 public class Cart {
     private List<OrderItemDto> items;
     private BigDecimal price;
 
-    @PostConstruct
-    public void init() {
+//    @PostConstruct
+    public Cart() {
         this.items = new ArrayList<>();
         this.price = BigDecimal.ZERO;
     }
@@ -77,6 +77,25 @@ public class Cart {
 //        }
         items.removeIf(oi -> oi.getProductId().equals(productId));
         recalculate();
+    }
+
+    public void merge(Cart another) {
+        for (OrderItemDto anotheItem : another.items) {
+            boolean merged = false;
+            for (OrderItemDto myItem : items){
+                if (myItem.getProductId().equals(anotheItem.getProductId())) {
+                    myItem.changeQuantity(anotheItem.getQuantity());
+                    merged = true;
+                    break;
+                }
+            }
+            if (!merged) {
+                items.add(anotheItem);
+            }
+
+        }
+        recalculate();
+        another.clear();
     }
 
 }

@@ -3,6 +3,7 @@ package ru.gb.market.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import ru.gb.market.dto.ProductDto;
 import ru.gb.market.models.Category;
@@ -43,11 +44,13 @@ public class ProductController {
     @GetMapping
     public Page<ProductDto> findAll(
             @RequestParam(name = "p", defaultValue = "1") int pageIndex,
-            @RequestParam(name = "min_price", required = false) BigDecimal minPrice,
-            @RequestParam(name = "max_price", required = false) BigDecimal maxPrice,
-            @RequestParam(name = "title", required = false) String title
+            @RequestParam MultiValueMap<String, String>  params
+
+//            @RequestParam(name = "min_price", required = false) BigDecimal minPrice,
+//            @RequestParam(name = "max_price", required = false) BigDecimal maxPrice,
+//            @RequestParam(name = "title", required = false) String title
     ) {
-        Specification<Product> productSpec = new CustomSpecification<Product>(minPrice, maxPrice, title).getProductSpecification();
+        Specification<Product> productSpec = new CustomSpecification<Product>(params).getProductSpecification();
         return productService.findPage(pageIndex - 1, 10, productSpec).map(ProductDto::new);
 
         //        Specification<Product> spec = Specification.where(null);
