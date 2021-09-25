@@ -2,15 +2,14 @@ angular.module('app').controller('productsController', function ($scope, $http, 
     const contextPath = 'http://localhost:4444/market';
 
     $scope.addToCart = function (productId) {
-    { if($scope.isUserLoggedIn())
         $http({
-            url: contextPath + '/api/v1/cart/add/' + productId,
+            url: contextPath + '/api/v1/cart/'+ $localStorage.guestCartUuid + '/add/' + productId,
             method: 'GET'
         }).then(function (response) {
-//            $scope.loadCart();
+            $scope.loadCart();
         });
         }
-    }
+
 
   $scope.loadPage = function (pageIndex = 1) {
           $http({

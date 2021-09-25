@@ -30,8 +30,16 @@
     }
 
     function run($rootScope, $http, $localStorage) {
+     const contextPath = 'http://localhost:4444/market/api/v1';
         if ($localStorage.marketUser) {
             $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.marketUser.token;
+        }
+        if (!$localStorage.guestCartUuid) {
+        $http.get(contextPath + '/cart/generate')
+                    .then(function successCallback(response) {
+                    $localStorage.guestCartUuid = response.data.value;
+
+                    });
         }
     }
 })();
@@ -48,6 +56,11 @@ angular.module('app').controller('indexController', function ($rootScope, $scope
 
                     $scope.user.username = null;
                     $scope.user.password = null;
+
+                    $http.get(contextPath+ '/cart/' + + $localStorage.guestCartUuid + '/merge')
+                    .then(function successCallback(response) {
+                     $localStorage.guestCartUuid = response.data.value;
+                    });
                 }
             }, function errorCallback(response) {
             });
