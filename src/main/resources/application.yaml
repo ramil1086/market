@@ -18,6 +18,9 @@ spring:
         dialect: org.hibernate.dialect.H2Dialect
 #        dialect: org.hibernate.dialect.PostgreSQL94Dialect
     open-in-view: false
+utils:
+  cart:
+    prefix: MRKT_
 
 #    driver-class-name: com.mysql.jdbc.Driver
 #    url: jdbc:mysql://localhost:3306/market?useUnicode=true&serverTimezone=UTC&useSSL=false

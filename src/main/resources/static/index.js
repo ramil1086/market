@@ -44,13 +44,15 @@
     }
 })();
 
-angular.module('app').controller('indexController', function ($rootScope, $scope, $http, $localStorage) {
+angular.module('app').controller('indexController', function ($rootScope, $location, $scope, $http, $localStorage) {
     const contextPath = 'http://localhost:4444/market/api/v1';
 
     $scope.tryToAuth = function () {
         $http.post(contextPath + '/auth', $scope.user)
             .then(function successCallback(response) {
                 if (response.data.token) {
+
+        $location.path("/products");
                     $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;
                     $localStorage.marketUser = {username: $scope.user.username, token: response.data.token};
 
@@ -61,6 +63,7 @@ angular.module('app').controller('indexController', function ($rootScope, $scope
                     .then(function successCallback(response) {
                      $localStorage.guestCartUuid = response.data.value;
                     });
+
                 }
             }, function errorCallback(response) {
             });
@@ -74,6 +77,7 @@ angular.module('app').controller('indexController', function ($rootScope, $scope
         if ($scope.user.password) {
             $scope.user.password = null;
         }
+        $location.path("/products");
     };
 
     $scope.clearUser = function () {
