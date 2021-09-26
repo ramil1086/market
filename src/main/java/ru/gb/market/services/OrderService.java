@@ -23,10 +23,11 @@ import java.util.stream.Collectors;
 public class OrderService {
     private final OrderRepository orderRepository;
     private final ProductService productService;
-    private final Cart cart;
+    private final CartService cartService;
 
     @Transactional
     public void createOrder(User user, String address, String phone) {
+        Cart cart = cartService.getCurrentCart(cartService.getCartFromSuffix(user.getUsername()));
         Order order = new Order();
         order.setUser(user);
         order.setAddress(address);
@@ -46,6 +47,7 @@ public class OrderService {
         }
         orderRepository.save(order);
         cart.clear();
+        cartService.updateCart(cartService.getCartFromSuffix(user.getUsername()),cart);
     }
 //
 //    public void createOrder(String email) {

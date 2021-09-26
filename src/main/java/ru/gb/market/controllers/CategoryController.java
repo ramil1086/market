@@ -7,6 +7,9 @@ import ru.gb.market.models.Category;
 import ru.gb.market.services.CategoryService;
 import ru.gb.market.exceptions.ResourceNotFoundException;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/categories")
@@ -19,6 +22,12 @@ public class CategoryController {
         Category c = categoryService.findById(id).orElseThrow(() -> new ResourceNotFoundException("Category not found, id: " + id));
         return new CategoryDto(c);
     }
+
+    @GetMapping
+    public List<CategoryDto> findAll() {
+        return categoryService.findAll().stream().map(CategoryDto::new).collect(Collectors.toList());
+    }
+
 
 
 

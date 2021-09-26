@@ -4,7 +4,7 @@ angular.module('app').controller('cartController', function ($scope, $http, $loc
 
     $scope.loadCart = function () {
       $http({
-                url: contextPath + '/api/v1/cart',
+                url: contextPath + '/api/v1/cart/' + $localStorage.guestCartUuid ,
                 method: 'GET'
             }).then(function (response) {
                 $scope.cart = response.data;
@@ -13,7 +13,7 @@ angular.module('app').controller('cartController', function ($scope, $http, $loc
 
     $scope.addToCart = function (productId) {
       $http({
-                    url: contextPath + '/api/v1/cart/add/' + productId,
+                    url: contextPath + '/api/v1/cart/' + $localStorage.guestCartUuid +'/add/' + productId,
                     method: 'GET'
                 }).then(function (response) {
                     $scope.loadCart();
@@ -22,7 +22,7 @@ angular.module('app').controller('cartController', function ($scope, $http, $loc
 
         $scope.changeQuantity = function (productId, amount) {
        $http({
-                url: contextPath + '/api/v1/cart/quantity',
+                url: contextPath + '/api/v1/cart/' + $localStorage.guestCartUuid +'/quantity',
                 method: 'GET',
                 params: {
                 'p': productId,
@@ -63,7 +63,7 @@ angular.module('app').controller('cartController', function ($scope, $http, $loc
 
            $scope.clearCart = function () {
                        $http({
-                                url: contextPath + '/api/v1/cart/clear',
+                                url: contextPath + '/api/v1/cart/' + $localStorage.guestCartUuid +'/clear',
                                 method: 'GET'
                             }).then(function (response) {
                             $scope.cart = null;
@@ -73,7 +73,7 @@ angular.module('app').controller('cartController', function ($scope, $http, $loc
 
                 $scope.deleteFromCart = function (productId) {
                $http({
-                        url: contextPath + '/api/v1/cart/delete/' + productId,
+                        url: contextPath + '/api/v1/cart/' + $localStorage.guestCartUuid +'/delete/' + productId,
                         method: 'DELETE'
                     }).then(function (response) {
                        $scope.loadCart();
